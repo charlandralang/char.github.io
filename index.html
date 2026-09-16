@@ -1196,22 +1196,54 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Look for common menu button and nav classes used by Owlstown templates
-    const menuToggle = document.querySelector('.navbar-burger, .menu-toggle, .navbar-toggle, .hamburger, button.menu');
-    const navMenu = document.querySelector('.navbar-menu, .nav-menu, .navbar-collapse, .menu');
+    // 1. Find the mobile navigation toggle button anywhere on the page
+    const buttons = document.querySelectorAll('button, a, div, span');
+    let toggleBtn = null;
+    
+    // Look for anything labeled menu, burger, or toggle
+    buttons.forEach(el => {
+      const cls = (el.className || '').toString().toLowerCase();
+      const id = (el.id || '').toString().toLowerCase();
+      const lbl = (el.getAttribute('aria-label') || '').toLowerCase();
+      if (cls.includes('burger') || cls.includes('toggle') || cls.includes('hamburger') || cls.includes('menu') || lbl.includes('menu') || id.includes('menu')) {
+        if (el.tagName === 'BUTTON' || cls.includes('icon') || el.children.length === 0 || cls.includes('burger')) {
+          toggleBtn = el;
+        }
+      }
+    });
 
-    if (menuToggle && navMenu) {
-      menuToggle.addEventListener('click', function(e) {
+    // 2. If it can't find it by text, look for standard header wrappers
+    const navMenu = document.querySelector('nav, .navbar-menu, .nav-menu, .navbar-collapse, .menu, #main-menu, .header-menu');
+
+    // 3. Force the click action to show/hide the menu
+    if (toggleBtn && navMenu) {
+      toggleBtn.style.cursor = 'pointer';
+      toggleBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        // Toggle the visual active/open classes
+        e.stopPropagation();
+        
+        // Toggle standard layout classes
         navMenu.classList.toggle('is-active');
         navMenu.classList.toggle('active');
-        menuToggle.classList.toggle('is-active');
-        menuToggle.classList.toggle('open');
+        navMenu.classList.toggle('open');
+        toggleBtn.classList.toggle('open');
+        
+        // Force visual display override if hidden by default CSS
+        if (window.getComputedStyle(navMenu).display === 'none') {
+          navMenu.style.setProperty('display', 'block', 'important');
+        } else {
+          navMenu.style.display = '';
+        }
+      });
+      
+      // Also listen for mobile touch events specifically
+      toggleBtn.addEventListener('touchstart', function(e) {
+        toggleBtn.click();
       });
     }
   });
 </script>
+
 
 </body></html>
 
