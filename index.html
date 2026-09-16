@@ -1192,4 +1192,26 @@
 <script type="module" src="./LANG_files/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;93e9f62fb129493595a3da2ef4e7a4b4&quot;,&quot;r&quot;:1,&quot;spa&quot;:2}" crossorigin="anonymous"></script>
 
 
-<script id="statcounter-js" async="" src="./LANG_files/counter.js"></script></body></html>
+<script id="statcounter-js" async="" src="./LANG_files/counter.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Look for common menu button and nav classes used by Owlstown templates
+    const menuToggle = document.querySelector('.navbar-burger, .menu-toggle, .navbar-toggle, .hamburger, button.menu');
+    const navMenu = document.querySelector('.navbar-menu, .nav-menu, .navbar-collapse, .menu');
+
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Toggle the visual active/open classes
+        navMenu.classList.toggle('is-active');
+        navMenu.classList.toggle('active');
+        menuToggle.classList.toggle('is-active');
+        menuToggle.classList.toggle('open');
+      });
+    }
+  });
+</script>
+
+</body></html>
+
