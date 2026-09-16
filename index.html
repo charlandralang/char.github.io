@@ -1194,24 +1194,38 @@
 
 <script id="statcounter-js" async="" src="./LANG_files/counter.js"></script>
   
-  <script>
+ <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. Target the Bulma mobile burger and the main navigation menu
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    // 1. Find all burger buttons and all navigation menus on the page
+    const burgers = document.querySelectorAll('.navbar-burger');
+    const menus = document.querySelectorAll('.navbar-menu, .nav-menu, #navbarMenuHeroA, #navMenu');
 
-    // 2. Add a click listener to the menu button
-    $navbarBurgers.forEach( el => {
-      el.addEventListener('click', () => {
-        // Find the target menu container using its built-in ID
-        const target = el.dataset.target;
-        const $target = document.getElementById(target);
-
-        // Toggle the "is-active" state class on both elements
-        el.classList.toggle('is-active');
-        $target.classList.toggle('is-active');
+    // 2. Loop through every burger button found
+    burgers.forEach(burger => {
+      // Force a touch action for immediate mobile response
+      burger.style.cursor = 'pointer';
+      
+      burger.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // 3. Forcefully toggle the active class on the button itself
+        burger.classList.toggle('is-active');
+        
+        // 4. Forcefully find and toggle every single menu container on the page
+        menus.forEach(menu => {
+          menu.classList.toggle('is-active');
+          
+          // Fallback override if the template is hard-hiding the menu with inline CSS
+          if (menu.classList.contains('is-active')) {
+            menu.style.setProperty('display', 'block', 'important');
+          } else {
+            menu.style.removeAttribute ? menu.style.removeAttribute('display') : menu.style.display = '';
+          }
+        });
       });
     });
   });
 </script>
+
   
 </body></html>
