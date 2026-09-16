@@ -1196,36 +1196,35 @@
   
  <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. Find all burger buttons and all navigation menus on the page
-    const burgers = document.querySelectorAll('.navbar-burger');
-    const menus = document.querySelectorAll('.navbar-menu, .nav-menu, #navbarMenuHeroA, #navMenu');
+    // 1. Force identify the exact mobile menu elements
+    const burger = document.querySelector('.navbar-burger');
+    const menu = document.querySelector('.navbar-menu');
 
-    // 2. Loop through every burger button found
-    burgers.forEach(burger => {
-      // Force a touch action for immediate mobile response
+    if (burger && menu) {
+      // Improve target area for touch fingers
       burger.style.cursor = 'pointer';
       
       burger.addEventListener('click', (e) => {
         e.preventDefault();
-        
-        // 3. Forcefully toggle the active class on the button itself
+        e.stopPropagation();
+
+        // 2. Toggle visual styling for the menu wrapper
         burger.classList.toggle('is-active');
-        
-        // 4. Forcefully find and toggle every single menu container on the page
-        menus.forEach(menu => {
-          menu.classList.toggle('is-active');
-          
-          // Fallback override if the template is hard-hiding the menu with inline CSS
-          if (menu.classList.contains('is-active')) {
-            menu.style.setProperty('display', 'block', 'important');
-          } else {
-            menu.style.removeAttribute ? menu.style.removeAttribute('display') : menu.style.display = '';
-          }
-        });
+        menu.classList.toggle('is-active');
+
+        // 3. Absolute manual display layout engine override
+        if (menu.classList.contains('is-active')) {
+          menu.style.setProperty('display', 'block', 'important');
+          menu.style.setProperty('visibility', 'visible', 'important');
+          menu.style.setProperty('opacity', '1', 'important');
+        } else {
+          menu.style.removeAttribute ? menu.style.removeAttribute('style') : menu.style.display = '';
+        }
       });
-    });
+    }
   });
 </script>
+
 
   
 </body></html>
