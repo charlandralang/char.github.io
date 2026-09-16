@@ -1195,35 +1195,40 @@
 <script id="statcounter-js" async="" src="./LANG_files/counter.js"></script>
   
  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. Force identify the exact mobile menu elements
-    const burger = document.querySelector('.navbar-burger');
-    const menu = document.querySelector('.navbar-menu');
-
-    if (burger && menu) {
-      // Improve target area for touch fingers
-      burger.style.cursor = 'pointer';
+  window.addEventListener('DOMContentLoaded', () => {
+    // 1. Target every single menu component regardless of shadow root layers
+    const toggleMenuAction = (e) => {
+      const burger = document.querySelector('.navbar-burger, button, a, [aria-label*="menu"]');
+      const menu = document.querySelector('.navbar-menu, nav, .menu, #main-menu');
       
-      burger.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      // 2. Global positioning backup: If a user taps the top right quadrant of the screen
+      const clickedTopRight = e.clientX > (window.innerWidth * 0.7) && e.clientY < 80;
 
-        // 2. Toggle visual styling for the menu wrapper
-        burger.classList.toggle('is-active');
-        menu.classList.toggle('is-active');
+      if (clickedTopRight || e.target.closest('.navbar-burger') || e.target.closest('[aria-label*="menu"]')) {
+        if (menu) {
+          // Force visual state toggle updates
+          menu.classList.toggle('is-active');
+          menu.classList.toggle('open');
+          if (burger) burger.classList.toggle('is-active');
 
-        // 3. Absolute manual display layout engine override
-        if (menu.classList.contains('is-active')) {
-          menu.style.setProperty('display', 'block', 'important');
-          menu.style.setProperty('visibility', 'visible', 'important');
-          menu.style.setProperty('opacity', '1', 'important');
-        } else {
-          menu.style.removeAttribute ? menu.style.removeAttribute('style') : menu.style.display = '';
+          // Hard-override any inline hidden CSS rules
+          if (menu.classList.contains('is-active') || menu.classList.contains('open')) {
+            menu.style.setProperty('display', 'block', 'important');
+            menu.style.setProperty('visibility', 'visible', 'important');
+            menu.style.setProperty('opacity', '1', 'important');
+          } else {
+            menu.style.setProperty('display', 'none', 'important');
+          }
         }
-      });
-    }
+      }
+    };
+
+    // 3. Listen to both standard tap and click methods across the window view
+    document.addEventListener('click', toggleMenuAction, true);
+    document.addEventListener('touchstart', toggleMenuAction, { passive: true, capture: true });
   });
 </script>
+
 
 
   
